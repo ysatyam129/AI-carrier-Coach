@@ -155,6 +155,12 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(400).json({ message: 'Email and password required' });
     }
     
+    // Check database connection
+    if (mongoose.connection.readyState !== 1) {
+      console.log('⚠️ Database not connected for login');
+      return res.status(503).json({ message: 'Database not ready' });
+    }
+    
     // Direct database operations
     const db = mongoose.connection.db;
     const users = db.collection('users');
@@ -534,6 +540,32 @@ async function seedQuizData(req, res) {
     res.status(500).json({ message: 'Quiz seeding failed', error: error.message });
   }
 }
+
+// Interview Quiz Questions (alias for quiz endpoint)
+app.get('/api/interview/quiz/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const limit = parseInt(req.query.limit) || 5;
+    
+    const db = mongoose.connection.db;
+    const quizzes = db.collection('quizzes');
+    
+    const questions = await quizzes.find({ category })
+      .limit(limit)
+      .toArray();
+    
+    res.json({
+      success: true,
+      questions,
+      category,
+      count: questions.length
+    });
+    
+  } catch (error) {
+    console.error('❌ Interview quiz fetch error:', error);
+    res.status(500).json({ message: 'Failed to fetch questions' });
+  }
+});
 
 // Get Quiz Questions by Category
 app.get('/api/quiz/:category', async (req, res) => {

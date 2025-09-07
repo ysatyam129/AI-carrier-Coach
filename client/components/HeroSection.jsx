@@ -60,7 +60,6 @@ const HeroSection = () => {
               height={720}
               alt="Dashboard Preview"
               className="rounded-lg shadow-2xl border mx-auto"
-              priority
             />
           </div>
         </div>

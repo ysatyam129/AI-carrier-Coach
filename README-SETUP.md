@@ -77,7 +77,7 @@ CLIENT_URL=http://localhost:3000
 ### Client (.env.local)
 ```env
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_nextauth_secret_here_make_it_long_and_secure
+NEXTAUTH_SECRET=your key
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 ```
 
